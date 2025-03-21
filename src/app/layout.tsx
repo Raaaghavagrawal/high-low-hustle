@@ -16,7 +16,6 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: 'Higher Lower Game',
   description: 'Guess which term has more monthly searches!',
-  manifest: '/manifest.json',
   icons: {
     icon: [
       {
@@ -24,8 +23,7 @@ export const metadata: Metadata = {
         type: 'image/svg+xml',
       }
     ]
-  },
-  themeColor: '#0A1929',
+  }
 };
 
 export default function RootLayout({
@@ -37,12 +35,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" type="image/svg+xml" href="/icon.svg" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <meta name="theme-color" content="#0A1929" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <link rel="manifest" href="/manifest.json" />
-        <script src="/register-sw.js" defer></script>
       </head>
       <body className={`${poppins.variable} font-sans`}>
         <ThemeProvider
