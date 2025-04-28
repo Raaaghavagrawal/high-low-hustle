@@ -25,6 +25,11 @@ const Game = ({ onExit }: GameProps) => {
     if (savedHighScore) {
       setHighScore(parseInt(savedHighScore, 10));
     }
+    
+    // Cleanup function to clear any animations
+    return () => {
+      setShowCorrect(false);
+    };
   }, []);
 
   const getRandomItem = async () => {
@@ -69,16 +74,22 @@ const Game = ({ onExit }: GameProps) => {
       try {
         const newNext = await getRandomItem();
         // Wait for the correct animation to complete before showing loading state
-        setTimeout(() => {
+        const timer = setTimeout(() => {
           setShowCorrect(false);
           setLoading(true);
           // Add a small delay before showing the next item
-          setTimeout(() => {
+          const nextTimer = setTimeout(() => {
             setCurrentItem(nextItem);
             setNextItem(newNext);
             setLoading(false);
           }, 100);
+          
+          // Clear timers if component unmounts
+          return () => clearTimeout(nextTimer);
         }, 1000);
+        
+        // Clear timers if component unmounts
+        return () => clearTimeout(timer);
       } catch (error) {
         console.error('Error fetching next item:', error);
         setLoading(false);
@@ -122,95 +133,81 @@ const Game = ({ onExit }: GameProps) => {
           </div>
 
           {/* Gamified Score Display */}
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mb-6 sm:mb-8 mt-12">
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 dark:from-blue-500/20 dark:to-blue-600/20 rounded-2xl p-4 shadow-lg dark:shadow-2xl backdrop-blur-sm flex items-center gap-3 border border-blue-500/20 dark:border-blue-400/20"
-            >
-              <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-full p-2 shadow-lg">
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                  />
-                </svg>
+          <div className="flex justify-between items-center mb-8 mt-2 relative z-10">
+            <div className="bg-white/20 dark:bg-gray-800/50 rounded-xl backdrop-blur-sm p-3 border border-white/20 dark:border-gray-700/30 flex items-center gap-3">
+              <div className="flex gap-1">
+                {[...Array(Math.min(5, score))].map((_, i) => (
+                  <motion.div
+                    key={`star-${i}`}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: i * 0.1 }}
+                  >
+                    <svg
+                      className="w-6 h-6 text-yellow-400"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  </motion.div>
+                ))}
+                {score > 5 && (
+                  <span className="text-white font-bold ml-1">+{score - 5}</span>
+                )}
               </div>
-              <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Current Score</p>
-                <motion.p
-                  key={score}
-                  initial={{ y: -20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-blue-300 bg-clip-text text-transparent"
-                >
-                  {score}
-                </motion.p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="bg-gradient-to-br from-yellow-500/10 to-yellow-600/10 dark:from-yellow-500/20 dark:to-yellow-600/20 rounded-2xl p-4 shadow-lg dark:shadow-2xl backdrop-blur-sm flex items-center gap-3 border border-yellow-500/20 dark:border-yellow-400/20"
-            >
-              <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full p-2 shadow-lg">
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-                  />
-                </svg>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">High Score</p>
-                <motion.p
-                  key={highScore}
-                  initial={{ y: -20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  className="text-3xl font-bold bg-gradient-to-r from-yellow-600 to-yellow-400 dark:from-yellow-400 dark:to-yellow-300 bg-clip-text text-transparent"
-                >
-                  {highScore}
-                </motion.p>
-              </div>
-            </motion.div>
+              <span className="text-white font-bold text-lg">Score: {score}</span>
+            </div>
+            <div className="bg-white/20 dark:bg-gray-800/50 rounded-xl backdrop-blur-sm p-3 border border-white/20 dark:border-gray-700/30">
+              <span className="text-white font-bold text-lg">Best: {highScore}</span>
+            </div>
           </div>
 
-          {loading ? (
-            <div className="flex items-center justify-center min-h-[60vh]">
-              <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-500"></div>
-            </div>
-          ) : gameOver ? (
-            <div className="text-center p-4 sm:p-8 bg-gradient-to-br from-red-500/10 to-red-600/10 dark:from-red-500/20 dark:to-red-600/20 rounded-2xl border border-red-500/20">
-              <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-red-600 to-red-400 bg-clip-text text-transparent">Game Over!</h2>
-              <p className="text-xl mb-6 text-gray-600 dark:text-gray-400">Final Score: {score}</p>
-              <button
-                onClick={startGame}
-                className="px-8 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 text-white rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 font-bold text-lg"
+          {gameOver ? (
+            <div className="text-center py-12">
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring" }}
+                className="bg-white/10 dark:bg-gray-800/50 backdrop-blur-md p-8 rounded-2xl border border-white/20 dark:border-gray-700/30 max-w-lg mx-auto"
               >
-                Play Again
-              </button>
+                <h2 className="text-4xl font-bold text-white mb-4">Game Over!</h2>
+                <p className="text-xl text-white/80 mb-4">
+                  You scored <span className="font-bold text-yellow-400">{score}</span> points!
+                </p>
+                <p className="text-white/70 mb-8">
+                  {score === 0
+                    ? "Better luck next time!"
+                    : score <= 3
+                    ? "Not bad! Keep practicing!"
+                    : score <= 7
+                    ? "Great job! You're getting good at this!"
+                    : "Amazing! You're a search trends master!"}
+                </p>
+                <motion.button
+                  onClick={startGame}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 font-semibold text-xl mx-2"
+                >
+                  Play Again
+                </motion.button>
+                <motion.button
+                  onClick={onExit}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-transparent border-2 border-white/30 hover:border-white/50 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 font-semibold text-xl mx-2 mt-4"
+                >
+                  Home
+                </motion.button>
+              </motion.div>
             </div>
           ) : (
             <>
               <div className="grid md:grid-cols-2 gap-4 sm:gap-8">
                 {currentItem && (
                   <motion.div
-                    key={currentItem.id}
+                    key={`current-${currentItem.id}`}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     className="bg-gradient-to-br from-white to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl overflow-hidden shadow-xl dark:shadow-2xl relative group border-2 border-white/50 dark:border-gray-700"
@@ -238,7 +235,7 @@ const Game = ({ onExit }: GameProps) => {
 
                 {nextItem && (
                   <motion.div
-                    key={nextItem.id}
+                    key={`next-${nextItem.id}`}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     className="bg-gradient-to-br from-white to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl overflow-hidden shadow-xl dark:shadow-2xl relative group border-2 border-white/50 dark:border-gray-700"
@@ -264,7 +261,7 @@ const Game = ({ onExit }: GameProps) => {
                         >
                           Higher
                           <svg
-                            className="w-5 h-5 transform transition-transform group-hover:translate-y--1"
+                            className="w-5 h-5 transform transition-transform group-hover:translate-y-1"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -297,45 +294,45 @@ const Game = ({ onExit }: GameProps) => {
                           </svg>
                         </button>
                       </div>
-                    </div>
-
-                    {/* Correct Answer Animation */}
-                    <AnimatePresence>
-                      {showCorrect && (
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className="absolute inset-0 bg-green-500/20 backdrop-blur-sm"
-                        >
+                      <AnimatePresence initial={false} mode="wait">
+                        {showCorrect && (
                           <motion.div
-                            initial={{ scale: 0, rotate: -180 }}
-                            animate={{ scale: 1, rotate: 0 }}
-                            transition={{ type: "spring", duration: 0.7 }}
-                            className="absolute inset-0 flex items-center justify-center"
+                            key="correct-overlay"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="absolute inset-0 bg-green-500/20 backdrop-blur-sm"
                           >
-                            <div className="bg-green-500 rounded-full p-4 shadow-xl">
-                              <svg
-                                className="w-16 h-16 text-white"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <motion.path
-                                  initial={{ pathLength: 0 }}
-                                  animate={{ pathLength: 1 }}
-                                  transition={{ duration: 0.5 }}
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M5 13l4 4L19 7"
-                                />
-                              </svg>
-                            </div>
+                            <motion.div
+                              initial={{ scale: 0, rotate: -180 }}
+                              animate={{ scale: 1, rotate: 0 }}
+                              exit={{ scale: 0, rotate: 180 }}
+                              transition={{ type: "spring", duration: 0.7 }}
+                              className="absolute inset-0 flex items-center justify-center"
+                            >
+                              <div className="bg-green-500 rounded-full p-4 shadow-xl">
+                                <svg
+                                  className="w-16 h-16 text-white"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <motion.path
+                                    initial={{ pathLength: 0 }}
+                                    animate={{ pathLength: 1 }}
+                                    transition={{ duration: 0.5 }}
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M5 13l4 4L19 7"
+                                  />
+                                </svg>
+                              </div>
+                            </motion.div>
                           </motion.div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   </motion.div>
                 )}
               </div>

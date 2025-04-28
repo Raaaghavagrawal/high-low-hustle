@@ -8,6 +8,9 @@ module.exports = {
     './src/**/*.{ts,tsx}',
   ],
   theme: {
+    fontFamily: {
+      sans: ['Poppins', 'sans-serif'],
+    },
     extend: {
       colors: {
         primary: '#1a1a1a',
@@ -15,7 +18,8 @@ module.exports = {
         accent: '#4CAF50',
       },
       fontFamily: {
-        sans: ['var(--font-poppins)', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'sans-serif'],
+        heading: ['Poppins', 'sans-serif'],
+        body: ['Poppins', 'sans-serif'],
       },
       animation: {
         'slide-up': 'slideUp 0.5s ease-out',

@@ -1,17 +1,7 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '../components/theme-provider';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { Poppins } from 'next/font/google';
-
-const inter = Inter({ subsets: ['latin'] });
-
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-poppins',
-});
 
 export const metadata: Metadata = {
   title: 'Higher Lower Game',
@@ -35,8 +25,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
       </head>
-      <body className={`${poppins.variable} font-sans`}>
+      <body className="font-sans">
         <ThemeProvider>
           <ThemeToggle />
           <div className="min-h-screen transition-colors duration-300 bg-gradient-to-b from-gray-100 to-white dark:from-gray-900 dark:to-gray-800">
