@@ -37,14 +37,9 @@ export default function RootLayout({
         <link rel="icon" type="image/svg+xml" href="/icon.svg" />
       </head>
       <body className={`${poppins.variable} font-sans`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider>
+          <ThemeToggle />
           <div className="min-h-screen transition-colors duration-300 bg-gradient-to-b from-gray-100 to-white dark:from-gray-900 dark:to-gray-800">
-            <ThemeToggle />
             {children}
           </div>
         </ThemeProvider>

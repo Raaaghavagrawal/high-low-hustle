@@ -28,6 +28,14 @@ body {
   .card {
     @apply bg-secondary rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105;
   }
+  
+  /* Theme toggle button styles */
+  .theme-toggle-fixed {
+    position: fixed !important;
+    top: 16px !important;
+    right: 16px !important;
+    z-index: 9999 !important;
+  }
 }
 
 @layer utilities {

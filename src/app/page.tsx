@@ -19,7 +19,8 @@ export default function HomePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="min-h-screen bg-[#0A1929] text-white relative overflow-hidden"
+          className="min-h-screen bg-gray-100 dark:bg-[#0A1929] text-gray-800 dark:text-white relative overflow-hidden"
+          style={{ zIndex: 0 }}
         >
           {/* Content */}
           <div className="relative z-10">
@@ -35,10 +36,10 @@ export default function HomePage() {
                     High-Low Hustle
                   </h1>
                   <div className="space-y-4">
-                    <p className="text-2xl md:text-3xl text-white/90 max-w-3xl mx-auto font-medium">
+                    <p className="text-2xl md:text-3xl text-gray-800 dark:text-white/90 max-w-3xl mx-auto font-medium">
                       Which has more monthly searches on Google?
                     </p>
-                    <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto">
+                    <p className="text-lg md:text-xl text-gray-600 dark:text-white/70 max-w-2xl mx-auto">
                       A simple but addictive game of higher or lower. Get it wrong, and it's game over. Get it right, and keep going...
                     </p>
                   </div>
@@ -58,17 +59,17 @@ export default function HomePage() {
                   transition={{ delay: 0.5, duration: 0.8 }}
                   className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
                 >
-                  <div className="p-6 bg-white/5 backdrop-blur-lg rounded-xl border border-white/10">
-                    <h3 className="text-xl font-semibold mb-2 text-white">🎯 How To Play</h3>
-                    <p className="text-white/80">Guess whether the next search term has higher or lower monthly searches than the current one.</p>
+                  <div className="p-6 bg-white/10 dark:bg-white/5 backdrop-blur-lg rounded-xl border border-gray-200/20 dark:border-white/10">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">🎯 How To Play</h3>
+                    <p className="text-gray-600 dark:text-white/80">Guess whether the next search term has higher or lower monthly searches than the current one.</p>
                   </div>
-                  <div className="p-6 bg-white/5 backdrop-blur-lg rounded-xl border border-white/10">
-                    <h3 className="text-xl font-semibold mb-2 text-white">🏆 Keep Going</h3>
-                    <p className="text-white/80">Each correct answer adds to your score. How many can you get right in a row?</p>
+                  <div className="p-6 bg-white/10 dark:bg-white/5 backdrop-blur-lg rounded-xl border border-gray-200/20 dark:border-white/10">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">🏆 Keep Going</h3>
+                    <p className="text-gray-600 dark:text-white/80">Each correct answer adds to your score. How many can you get right in a row?</p>
                   </div>
-                  <div className="p-6 bg-white/5 backdrop-blur-lg rounded-xl border border-white/10">
-                    <h3 className="text-xl font-semibold mb-2 text-white">🌟 Beat Your Best</h3>
-                    <p className="text-white/80">Try to beat your high score and become a master of search trends!</p>
+                  <div className="p-6 bg-white/10 dark:bg-white/5 backdrop-blur-lg rounded-xl border border-gray-200/20 dark:border-white/10">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">🌟 Beat Your Best</h3>
+                    <p className="text-gray-600 dark:text-white/80">Try to beat your high score and become a master of search trends!</p>
                   </div>
                 </motion.div>
               </div>
