@@ -39,7 +39,7 @@ const FALLBACK_IMAGES = {
     Athletes: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1200&h=800&q=85'
   },
   Technology: {
-    Smartphones: 'https://images.unsplash.com/photo-1592434134753-a70d6f61d37c?auto=format&fit=crop&w=1200&h=800&q=85',
+    Smartphones: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?auto=format&fit=crop&w=1200&h=800&q=85',
     Gaming: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=1200&h=800&q=85',
     Software: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&h=800&q=85'
   },
@@ -280,7 +280,7 @@ const getRandomSearchVolume = (category: string) => {
 
 const getFallbackImage = (category: string, subcategory: string): string => {
   return FALLBACK_IMAGES[category as keyof typeof FALLBACK_IMAGES]?.[subcategory as keyof (typeof FALLBACK_IMAGES)[keyof typeof FALLBACK_IMAGES]] ||
-    'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=800&q=85';
+    'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?auto=format&fit=crop&w=1200&h=800&q=85';
 };
 
 const fetchPexelsImage = async (searchQuery: string, category: string): Promise<{ url: string; photographer: string } | null> => {
@@ -446,7 +446,7 @@ export const fetchRandomItem = async (): Promise<ComparisonItem> => {
       title: randomItem.term,
       description: `Search popularity for ${randomItem.term} (${randomItem.subcategory})`,
       searchVolume: getRandomSearchVolume(randomItem.category),
-      imageUrl: `https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=800&q=85`,
+      imageUrl: `https://images.unsplash.com/photo-1556388158-158ea5ccacbd?auto=format&fit=crop&w=1200&h=800&q=85`,
       category: `${randomItem.category} - ${randomItem.subcategory}`,
       photographer: 'Unsplash'
     };
