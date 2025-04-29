@@ -10,6 +10,7 @@ export default function HomePage() {
   const contentRef = useRef<HTMLDivElement>(null);
 
   const handleGameExit = () => {
+    console.log('handleGameExit called');
     setShowGame(false);
   };
 
